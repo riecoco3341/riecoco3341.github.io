@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>自筆証書遺言チェッカー｜行政書士日本橋中央パートナーズ</title>
+<meta name="description" content="自筆証書遺言が法律の要件を満たしているか無料でチェックできるツールです。行政書士日本橋中央パートナーズ提供。">
+<link rel="icon" href="images/logo.jpg" type="image/jpeg">
+<link rel="stylesheet" href="style.css">
+<style>
+/* ===== CHECKER SPECIFIC STYLES ===== */
+.checker-wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 20px 60px;
+}
+
+.checker-intro {
+  background: var(--cream);
+  border-left: 4px solid var(--gold);
+  padding: 20px 24px;
+  margin: 40px 0 32px;
+  font-size: 13px;
+  line-height: 1.9;
+  color: var(--text);
+}
+
+.checker-intro strong { color: var(--navy); }
+
+.progress-wrap {
+  margin-bottom: 32px;
+}
+.progress-label {
+  font-size: 12px;
+  color: var(--text-light);
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+}
+.progress-track {
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--gold);
+  border-radius: 2px;
+  transition: width 0.4s ease;
+  width: 0%;
+}
+
+.q-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--border);
+  padding: 24px;
+  margin-bottom: 16px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.q-card.answered-yes { border-left-color: var(--gold); }
+.q-card.answered-no  { border-left-color: #C0392B; }
+
+.q-badge {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  padding: 3px 10px;
+  margin-bottom: 10px;
+  display: inline-block;
+}
+.badge-required {
+  background: var(--gold-faint);
+  color: var(--navy);
+}
+.badge-conditional {
+  background: #EAF4FB;
+  color: #1A5276;
+}
+
+.q-text {
+  font-family: var(--serif);
+  font-size: 16px;
+  color: var(--navy);
+  font-weight: 700;
+  margin-bottom: 6px;
+  line-height: 1.5;
+}
+.q-hint {
+  font-size: 12px;
+  color: var(--text-light);
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+
+.q-buttons {
+  display: flex;
+  gap: 12px;
+}
+.btn-yes, .btn-no, .btn-na {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid var(--border);
+  background: var(--white);
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+  letter-spacing: 0.05em;
+}
+.btn-yes:hover { background: var(--gold-faint); border-color: var(--gold); color: var(--navy); }
+.btn-no:hover  { background: #FDEDEC; border-color: #C0392B; color: #C0392B; }
+.btn-na:hover  { background: var(--cream); border-color: var(--navy); color: var(--navy); }
+
+.btn-yes.active { background: var(--gold); border-color: var(--gold); color: var(--white); }
+.btn-no.active  { background: #C0392B; border-color: #C0392B; color: var(--white); }
+.btn-na.active  { background: var(--navy); border-color: var(--navy); color: var(--white); }
+
+/* RESULT */
+.result-box {
+  display: none;
+  margin-top: 40px;
+  padding: 36px;
+  border-top: 4px solid var(--gold);
+  background: var(--white);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+.result-box.show { display: block; }
+
+.result-icon { font-size: 48px; margin-bottom: 16px; }
+.result-title {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.result-ok .result-title { color: #1A7A4A; }
+.result-ng .result-title { color: #C0392B; }
+
+.result-body {
+  font-size: 14px;
+  line-height: 1.9;
+  color: var(--text);
+  margin-bottom: 20px;
+}
+
+.issues-list {
+  list-style: none;
+  margin-bottom: 24px;
+}
+.issues-list li {
+  font-size: 13px;
+  color: #C0392B;
+  padding: 8px 12px 8px 32px;
+  background: #FDEDEC;
+  margin-bottom: 8px;
+  position: relative;
+  line-height: 1.7;
+}
+.issues-list li::before {
+  content: '✗';
+  position: absolute;
+  left: 12px;
+  font-weight: 700;
+}
+
+.result-cta {
+  background: var(--gold-faint);
+  border-left: 3px solid var(--gold);
+  padding: 20px 24px;
+  margin-top: 24px;
+  font-size: 13px;
+  line-height: 1.9;
+}
+.result-cta strong { color: var(--navy); font-size: 14px; }
+
+.btn-contact {
+  display: inline-block;
+  margin-top: 16px;
+  background: var(--navy);
+  color: var(--white);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 12px 32px;
+  text-decoration: none;
+  letter-spacing: 0.08em;
+  transition: background 0.2s;
+}
+.btn-contact:hover { background: var(--navy-mid); }
+
+.btn-reset {
+  display: inline-block;
+  margin-top: 20px;
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-light);
+  font-family: var(--sans);
+  font-size: 12px;
+  padding: 8px 24px;
+  cursor: pointer;
+  letter-spacing: 0.06em;
+  transition: all 0.2s;
+}
+.btn-reset:hover { border-color: var(--navy); color: var(--navy); }
+
+.disclaimer {
+  margin-top: 48px;
+  padding: 16px 20px;
+  background: var(--cream);
+  font-size: 11px;
+  color: var(--text-light);
+  line-height: 1.8;
+  border: 1px solid var(--border);
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="header-brand">
+      <img src="images/logo.jpg" alt="ロゴ" class="header-logo">
+      <div class="header-text">
+        <strong>行政書士 日本橋中央パートナーズ</strong>
+        <span>NIHONBASHI CHUO PARTNERS</span>
+      </div>
+    </a>
+    <nav class="site-nav">
+      <a href="international.html">国際・ビザ</a>
+      <a href="permits.html">許認可</a>
+      <a href="inheritance.html">遺言・相続</a>
+      <a href="index.html#access">アクセス</a>
+      <a href="index.html#contact" class="nav-cta">初回相談</a>
+    </nav>
+    <button class="nav-toggle" id="navToggle" aria-label="メニュー">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav class="mobile-nav" id="mobileNav">
+    <a href="international.html">国際・ビザ</a>
+    <a href="permits.html">許認可</a>
+    <a href="inheritance.html">遺言・相続</a>
+    <a href="index.html#access">アクセス</a>
+    <a href="index.html#contact">初回相談</a>
+  </nav>
+</header>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <a href="index.html">トップ</a><span>›</span>
+  <a href="inheritance.html">遺言・相続</a><span>›</span>
+  自筆証書遺言チェッカー
+</div>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <p class="page-hero-label">Free Tool</p>
+  <h1 class="page-hero-title">自筆証書遺言チェッカー</h1>
+  <p class="page-hero-sub">作成した遺言書が法律の要件を満たしているか、簡単に確認できます。</p>
+</section>
+
+<!-- CHECKER -->
+<section class="section" style="padding-top:40px;">
+  <div class="checker-wrap">
+
+    <div class="checker-intro">
+      <strong>自筆証書遺言とは</strong><br>
+      遺言者が遺言の全文・日付・氏名を自書（手書き）し、押印することで成立する遺言書です（民法968条）。公正証書遺言と異なり、費用をかけず一人で作成できますが、<strong>要件を一つでも欠くと無効</strong>になります。このチェッカーで基本的な要件を確認しましょう。
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span>チェック進捗</span>
+        <span id="progress-count">0 / 7 項目</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+    </div>
+
+    <div id="questions"></div>
+
+    <div class="result-box" id="result-box">
+      <div id="result-content"></div>
+      <button class="btn-reset" onclick="resetChecker()">もう一度チェックする</button>
+    </div>
+
+    <div class="disclaimer">
+      ※ このチェッカーは一般的な要件を確認するための参考ツールです。法的な有効性を保証するものではありません。遺言書の内容・効力については、必ず専門家にご相談ください。
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <img src="images/logo.jpg" alt="ロゴ" class="footer-logo">
+  <p class="footer-name">行政書士 日本橋中央パートナーズ</p>
+  <nav class="footer-nav">
+    <a href="index.html">トップ</a>
+    <a href="international.html">国際・ビザ</a>
+    <a href="permits.html">許認可</a>
+    <a href="inheritance.html">遺言・相続</a>
+    <a href="index.html#contact">お問い合わせ</a>
+  </nav>
+  <p class="footer-copy">&copy; 行政書士 日本橋中央パートナーズ All Rights Reserved.</p>
+</footer>
+
+<script>
+const questions = [
+  {
+    id: 'q1',
+    badge: '必須要件',
+    type: 'required',
+    text: '遺言書の全文を、自分の手で書きましたか？',
+    hint: 'パソコン・ワープロ・代筆はNGです。財産目録を除き、本文は必ず自書（手書き）が必要です（民法968条1項）。',
+    yesLabel: 'はい（手書き）',
+    noLabel: 'いいえ（パソコン等）'
+  },
+  {
+    id: 'q2',
+    badge: '必須要件',
+    type: 'required',
+    text: '作成した日付（年月日）を自書しましたか？',
+    hint: '「〇〇年〇月〇日」と具体的な日付が必要です。「〇月吉日」など日が特定できない表記は無効とされます。',
+    yesLabel: 'はい（年月日を明記）',
+    noLabel: 'いいえ / 日が不明確'
+  },
+  {
+    id: 'q3',
+    badge: '必須要件',
+    type: 'required',
+    text: '遺言書に自分の氏名を自書しましたか？',
+    hint: '氏名を自書することが必要です。通常は氏名を記載しますが、氏のみ・名のみでも特定できれば有効とされる場合があります。',
+    yesLabel: 'はい',
+    noLabel: 'いいえ'
+  },
+  {
+    id: 'q4',
+    badge: '必須要件',
+    type: 'required',
+    text: '遺言書に押印しましたか？',
+    hint: '実印・認印・拇印いずれも有効です。押印がない場合は無効となります。',
+    yesLabel: 'はい（押印あり）',
+    noLabel: 'いいえ（押印なし）'
+  },
+  {
+    id: 'q5',
+    badge: '必須要件',
+    type: 'required',
+    text: '遺言書の内容は明確に特定されていますか？',
+    hint: '「財産をAに渡す」では不明確な場合があります。不動産は所在地・地番、預貯金は金融機関名・口座番号など、特定できる記載が必要です。',
+    yesLabel: 'はい（具体的に記載）',
+    noLabel: 'いいえ / 不明確な部分がある'
+  },
+  {
+    id: 'q6',
+    badge: '該当する場合',
+    type: 'conditional',
+    text: '書き間違いを訂正した箇所がある場合、正しい方法で訂正しましたか？',
+    hint: '訂正は①訂正箇所を二重線で消す②欄外に「○字削除○字追加」と記載③署名④押印 の手順が必要です（民法968条3項）。修正液・修正テープはNGです。',
+    yesLabel: 'はい（正しく訂正）',
+    noLabel: 'いいえ / 修正液等を使用',
+    naLabel: '訂正箇所なし'
+  },
+  {
+    id: 'q7',
+    badge: '該当する場合',
+    type: 'conditional',
+    text: '財産目録を添付している場合、各ページに署名・押印しましたか？',
+    hint: '財産目録はパソコン作成・通帳のコピー等でも可ですが、各ページに署名と押印が必要です（民法968条2項）。',
+    yesLabel: 'はい（各ページに署名・押印）',
+    noLabel: 'いいえ（署名・押印なし）',
+    naLabel: '財産目録なし'
+  }
+];
+
+const answers = {};
+
+function renderQuestions() {
+  const container = document.getElementById('questions');
+  container.innerHTML = '';
+  questions.forEach(q => {
+    const card = document.createElement('div');
+    card.className = 'q-card' + (answers[q.id] ? ' answered-' + (answers[q.id] === 'yes' ? 'yes' : answers[q.id] === 'no' ? 'no' : 'yes') : '');
+    card.id = 'card-' + q.id;
+
+    const hasNA = q.naLabel;
+    card.innerHTML = `
+      <span class="q-badge ${q.type === 'required' ? 'badge-required' : 'badge-conditional'}">${q.badge}</span>
+      <p class="q-text">${q.text}</p>
+      <p class="q-hint">${q.hint}</p>
+      <div class="q-buttons">
+        <button class="btn-yes ${answers[q.id] === 'yes' ? 'active' : ''}" onclick="answer('${q.id}', 'yes')">✓ ${q.yesLabel}</button>
+        <button class="btn-no ${answers[q.id] === 'no' ? 'active' : ''}" onclick="answer('${q.id}', 'no')">✗ ${q.noLabel}</button>
+        ${hasNA ? `<button class="btn-na ${answers[q.id] === 'na' ? 'active' : ''}" onclick="answer('${q.id}', 'na')">— ${q.naLabel}</button>` : ''}
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function answer(id, value) {
+  answers[id] = value;
+  updateProgress();
+  renderQuestions();
+  if (Object.keys(answers).length === questions.length) {
+    showResult();
+  }
+}
+
+function updateProgress() {
+  const count = Object.keys(answers).length;
+  const total = questions.length;
+  document.getElementById('progress-count').textContent = count + ' / ' + total + ' 項目';
+  document.getElementById('progress-fill').style.width = (count / total * 100) + '%';
+}
+
+function showResult() {
+  const issues = [];
+
+  if (answers.q1 === 'no') issues.push('全文が自書（手書き）されていません。パソコン等で作成した本文は無効です。');
+  if (answers.q2 === 'no') issues.push('日付が記載されていないか、特定できない日付になっています。');
+  if (answers.q3 === 'no') issues.push('氏名の自書がありません。');
+  if (answers.q4 === 'no') issues.push('押印がありません。押印は必須要件です。');
+  if (answers.q5 === 'no') issues.push('財産や受取人の特定が不十分な箇所があります。');
+  if (answers.q6 === 'no') issues.push('訂正方法が正しくありません。修正液・修正テープは使用できません。');
+  if (answers.q7 === 'no') issues.push('財産目録に署名・押印がないページがあります。');
+
+  const resultBox = document.getElementById('result-box');
+  const resultContent = document.getElementById('result-content');
+  resultBox.classList.add('show');
+
+  if (issues.length === 0) {
+    resultBox.style.borderTopColor = '#1A7A4A';
+    resultContent.innerHTML = `
+      <div class="result-ok">
+        <div class="result-icon">✅</div>
+        <p class="result-title">基本的な要件を満たしています</p>
+        <p class="result-body">チェックした項目については、自筆証書遺言の基本要件を満たしていると考えられます。<br>ただし、このチェッカーは基本的な確認ツールです。遺言書の内容の明確さ・法的な有効性については、専門家に確認されることをお勧めします。</p>
+        <div class="result-cta">
+          <strong>さらに安心のために</strong><br>
+          要件を満たしていても、内容の解釈や記載方法によってトラブルになるケースがあります。せっかくの遺志を確実に実現するため、一度行政書士にご相談ください。
+          <br>
+          <a href="index.html#contact" class="btn-contact">無料相談・お問い合わせ</a>
+        </div>
+      </div>
+    `;
+  } else {
+    resultBox.style.borderTopColor = '#C0392B';
+    resultContent.innerHTML = `
+      <div class="result-ng">
+        <div class="result-icon">⚠️</div>
+        <p class="result-title">要件を満たしていない可能性があります</p>
+        <p class="result-body">以下の点に問題が見られます。このままでは遺言書が<strong>無効</strong>になる可能性があります。</p>
+        <ul class="issues-list">
+          ${issues.map(i => `<li>${i}</li>`).join('')}
+        </ul>
+        <div class="result-cta">
+          <strong>お早めにご相談ください</strong><br>
+          無効な遺言書は、どれだけ丁寧に書かれていても法的効力を持ちません。当事務所では遺言書の作成サポートを行っています。現在の遺言書の確認・修正・公正証書化のご相談もお気軽にどうぞ。
+          <br>
+          <a href="index.html#contact" class="btn-contact">専門家に相談する</a>
+        </div>
+      </div>
+    `;
+  }
+
+  resultBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function resetChecker() {
+  Object.keys(answers).forEach(k => delete answers[k]);
+  updateProgress();
+  renderQuestions();
+  const resultBox = document.getElementById('result-box');
+  resultBox.classList.remove('show');
+  resultBox.style.borderTopColor = 'var(--gold)';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Init
+renderQuestions();
+
+// Mobile nav
+document.getElementById('navToggle').addEventListener('click', () => {
+  document.getElementById('mobileNav').classList.toggle('open');
+});
+</script>
+</body>
+</html>
