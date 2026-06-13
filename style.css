@@ -48,14 +48,6 @@ a { color: inherit; }
   gap: 14px;
   text-decoration: none;
 }
-/* ロゴ画像を少し拡大して白い余白を切り取る */
-.header-logo,
-.hero-logo,
-.footer-logo {
-  transform: scale(1.15);
-  background-color: var(--navy-dark);
-}
-
 .header-logo {
   width: 44px;
   height: 44px;
