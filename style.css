@@ -48,6 +48,14 @@ a { color: inherit; }
   gap: 14px;
   text-decoration: none;
 }
+/* ロゴ画像を少し拡大して白い余白を切り取る */
+.header-logo,
+.hero-logo,
+.footer-logo {
+  transform: scale(1.08);
+  transition: transform 0.2s;
+}
+
 .header-logo {
   width: 44px;
   height: 44px;
@@ -155,8 +163,8 @@ a { color: inherit; }
   border-radius: 50%;
   margin: 0 auto 28px;
   object-fit: cover;
-  outline: 3px solid var(--gold);
-  outline-offset: -8px;
+  box-shadow: 0 0 0 3px var(--gold);
+  overflow: hidden;
 }
 .hero-catch {
   font-family: var(--serif);
