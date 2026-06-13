@@ -54,7 +54,8 @@ a { color: inherit; }
   border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;
-  box-shadow: 0 0 0 2px var(--gold);
+  border: 2px solid var(--gold);
+  background-color: var(--navy-dark);
 }
 .header-text { line-height: 1.3; }
 .header-text strong {
@@ -155,7 +156,8 @@ a { color: inherit; }
   border-radius: 50%;
   margin: 0 auto 28px;
   object-fit: cover;
-  box-shadow: 0 0 0 3px var(--gold);
+  border: 3px solid var(--gold);
+  background-color: var(--navy-dark);
   overflow: hidden;
 }
 .hero-catch {
@@ -652,7 +654,8 @@ details[open] summary { margin-bottom: 16px; }
   border-radius: 50%;
   object-fit: cover;
   margin: 0 auto 16px;
-  box-shadow: 0 0 0 2px var(--gold);
+  border: 2px solid var(--gold);
+  background-color: var(--navy-dark);
 }
 .footer-name {
   font-family: var(--serif);
