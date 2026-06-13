@@ -52,7 +52,7 @@ a { color: inherit; }
 .header-logo,
 .hero-logo,
 .footer-logo {
-  transform: scale(1.08);
+  transform: scale(1.15);
   transition: transform 0.2s;
 }
 
