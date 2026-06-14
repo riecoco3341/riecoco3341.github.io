@@ -219,6 +219,8 @@ a { color: inherit; text-decoration: none; }
 }
 .section.bg-navy .section-title,
 .section.bg-navy-mid .section-title { color: var(--white); }
+.section.bg-navy,
+.section.bg-navy-mid { color: rgba(255,255,255,0.85); }
 .section-lead {
   color: var(--text-light);
   font-size: 14px;
