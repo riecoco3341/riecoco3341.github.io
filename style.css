@@ -593,7 +593,7 @@ a { color: inherit; text-decoration: none; }
   background: var(--white);
   border: 1px solid #e8e4db;
   padding: 40px;
-  max-width: 760px;
+  max-width: 100%;
 }
 .profile-photo {
   width: 120px;
