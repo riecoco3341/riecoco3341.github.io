@@ -763,7 +763,19 @@ a { color: inherit; text-decoration: none; }
   line-height: 1.8;
 }
 
-/* ===== CHECKER PAGE ===== */
+.fb-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #1877f2;
+  color: var(--white);
+  font-size: 14px;
+  font-weight: 700;
+  padding: 13px 28px;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+.fb-btn:hover { background: #1464d8; }
 .checker-wrap {
   max-width: 640px;
   margin: 0 auto;
