@@ -71,20 +71,28 @@ a { color: inherit; text-decoration: none; }
 .header-text {
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: 2px;
+}
+.header-text .label {
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: rgba(255,255,255,0.45);
+  text-transform: none;
 }
 .header-text .line1 {
   font-family: var(--serif);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
   color: var(--white);
   letter-spacing: 0.03em;
   white-space: nowrap;
 }
 .header-text .line2 {
-  font-size: 10px;
+  font-family: var(--serif);
+  font-size: 12px;
+  font-weight: 700;
   color: var(--gold-light);
-  letter-spacing: 0.05em;
+  letter-spacing: 0.03em;
   white-space: nowrap;
 }
 .site-nav {
