@@ -197,6 +197,10 @@
           <label>お名前 <span class="req">必須</span></label>
           <input type="text" name="name" required placeholder="山田 太郎">
         </div>
+        <div class="form-row" id="report-number-row" style="display:none;">
+       <label>レポート番号</label>
+       <input type="text" name="report_number" id="report_number" readonly>
+     </div>
         <div class="form-row">
           <label>メールアドレス <span class="req">必須</span></label>
           <input type="email" name="email" required placeholder="example@email.com">
@@ -252,5 +256,31 @@
   const mobileNav = document.getElementById('mobileNav');
   toggle.addEventListener('click', () => { mobileNav.classList.toggle('open'); });
 </script>
+ <script>
+       (function(){
+         var params = new URLSearchParams(window.location.search);
+         var name = params.get('name');
+         var report = params.get('report');
+
+         if (name) {
+           var nameInput = document.querySelector('#contact input[name="name"]');
+           if (nameInput) nameInput.value = name;
+         }
+         if (report) {
+           var reportInput = document.getElementById('report_number');
+           var reportRow = document.getElementById('report-number-row');
+           if (reportInput) reportInput.value = report;
+           if (reportRow) reportRow.style.display = '';
+         }
+         if (name || report) {
+           var categorySelect = document.querySelector('#contact select[name="category"]');
+           if (categorySelect) categorySelect.value = '相続・遺言';
+         }
+         if ((name || report) && window.location.hash === '#contact') {
+           var contactSection = document.getElementById('contact');
+           if (contactSection) contactSection.scrollIntoView();
+         }
+       })();
+       </script>
 </body>
 </html>
